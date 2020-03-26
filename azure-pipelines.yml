@@ -10,9 +10,20 @@ pool:
   vmImage: 'vs2017-win2016'
 
 variables:
+  buildPlatform: 'any cpu'
   buildConfiguration: 'Release'
 steps:
 - task: NuGetToolInstaller@1
   displayName: 'Use NuGet '
   inputs:
     versionSpec: '$(Parameters.versionSpec)'
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    vstsFeed: 'a90b78c9-68ab-472c-9fc4-7ab9b4ac1d26'
+    
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
